@@ -1,9 +1,22 @@
 #include "MainComponent.h"
-
+using namespace juce;
 //==============================================================================
 MainComponent::MainComponent()
 {
+    dial1.setSliderStyle(Slider::Rotary);
+    dial1.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 20);
+    addAndMakeVisible(dial1);
+
+    dial2.setSliderStyle(Slider::Rotary);
+    dial2.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    addAndMakeVisible(dial2);
+
+    slider1.setSliderStyle(Slider::LinearHorizontal);
+    slider1.setTextBoxStyle(Slider::TextBoxBelow, false, 50, 20);
+    addAndMakeVisible(slider1);
+
     setSize (600, 400);
+    
 }
 
 MainComponent::~MainComponent()
@@ -11,19 +24,20 @@ MainComponent::~MainComponent()
 }
 
 //==============================================================================
-void MainComponent::paint (juce::Graphics& g)
+void MainComponent::paint (Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    g.setFont (juce::Font (16.0f));
-    g.setColour (juce::Colours::white);
-    g.drawText ("Hello World!", getLocalBounds(), juce::Justification::centred, true);
+    g.fillAll(Colours::aquamarine);
 }
 
 void MainComponent::resized()
 {
-    // This is called when the MainComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
+    const int border = 20;
+
+    Rectangle<int> totalArea = getLocalBounds();
+    Rectangle<int> dialSection = totalArea.removeFromTop(totalArea.getHeight() / 2);
+
+    dial1.setBounds(dialSection.removeFromLeft(totalArea.getWidth() / 2));
+    dial2.setBounds(dialSection.removeFromRight(totalArea.getWidth() / 2).reduced(border));
+
+    slider1.setBounds(totalArea);
 }
